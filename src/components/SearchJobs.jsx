@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import { Spinner, Form, Button, Row, Col } from "react-bootstrap";
 import JobCard from "./Jobs";
+import { withRouter } from "react-router-dom";
 
 export class SearchJobs extends Component {
   state = {
     position: "",
-    positionError: false,
     location: "",
-    locationError: false,
     isLoading: false,
-    jobs: [],
+    selectedJob: null,
   };
+
+  handleSelectedJob = (id) => this.setState({ selectedJob: id });
 
   onKeywordChange = (e) => {
     this.setState({ potition: e.target.value });
@@ -21,7 +22,7 @@ export class SearchJobs extends Component {
   };
 
   clearFields = () => {
-    this.setState({ location: null, potition: "", jobs: null });
+    this.setState({ location: "", position: "" });
   };
 
   searchJobs = (e) => {
@@ -43,9 +44,10 @@ export class SearchJobs extends Component {
       .then((response) => {
         return response.json();
       })
-      .then((res) => {
-        console.log(res);
-        this.setState({ jobs: res, isLoading: false });
+      .then((jobResults) => {
+        console.log(jobResults);
+        this.setState({ isLoading: false });
+        this.props.setJobs(jobResults);
       })
       .catch((err) => {
         console.log(err);
@@ -111,10 +113,14 @@ export class SearchJobs extends Component {
             </Row>
           </Form>
         )}
-        <JobCard jobs={this.state.jobs} />
+        <JobCard
+          selectedJob={this.state.selectedJob}
+          handleSelectedJob={this.handleSelectedJob}
+          jobs={this.props.jobs}
+        />
       </>
     );
   }
 }
 
-export default SearchJobs;
+export default withRouter(SearchJobs);
