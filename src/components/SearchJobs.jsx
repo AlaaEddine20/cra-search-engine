@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Spinner, Form, Button, Row, Col } from "react-bootstrap";
+import JobCard from "./Jobs";
+
 export class SearchJobs extends Component {
   state = {
     position: "",
@@ -52,51 +54,64 @@ export class SearchJobs extends Component {
   };
 
   render() {
-    const { keywords, location } = this.state;
+    const { keywords, location, isLoading } = this.state;
     return (
       <>
-        <Form className="container-lg d-flex flex-column">
-          <Row>
-            <Col>
-              <Form.Group>
-                <Form.Label>Job Position</Form.Label>
-                <Form.Control
-                  value={keywords}
-                  onChange={this.onKeywordChange}
-                  type="text"
-                  required
-                />
-                <Form.Text className="text-muted">
-                  For example: Web developer..
-                </Form.Text>
-              </Form.Group>
-            </Col>
-          </Row>
+        {isLoading ? (
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        ) : (
+          <Form className="container-lg d-flex flex-column">
+            <Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label>Job Position</Form.Label>
+                  <Form.Control
+                    value={keywords}
+                    onChange={this.onKeywordChange}
+                    type="text"
+                    required
+                  />
+                  <Form.Text className="text-muted">
+                    For example: Web developer..
+                  </Form.Text>
+                </Form.Group>
+              </Col>
+            </Row>
 
-          <Form.Group>
-            <Form.Label>Location</Form.Label>
-            <Form.Control
-              value={location}
-              onChange={this.onLocationChange}
-              type="text"
-              required
-            />
-          </Form.Group>
-          <Row>
-            <Col>
-              <Button onClick={this.searchJobs} variant="primary" type="submit">
-                Search
-              </Button>
-              <Button
-                onClick={this.clearFields}
-                variant="secondary"
-                type="submit"
-              >
-                Clear
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+            <Form.Group>
+              <Form.Label>Location</Form.Label>
+              <Form.Control
+                value={location}
+                onChange={this.onLocationChange}
+                type="text"
+                required
+              />
+            </Form.Group>
+            <Row className="mx-auto">
+              <Col md={6}>
+                <Button
+                  onClick={this.searchJobs}
+                  variant="primary"
+                  type="submit"
+                >
+                  Search
+                </Button>
+              </Col>
+              <Col md={6}>
+                <Button
+                  onClick={this.clearFields}
+                  variant="secondary"
+                  type="submit"
+                >
+                  Clear
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        )}
+        <JobCard jobs={this.state.jobs} />
       </>
     );
   }
