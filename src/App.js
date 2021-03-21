@@ -18,12 +18,14 @@ export class App extends Component {
 
           <Route exact path="/">
             <SearchJobs
+              // setJobs is used in SearchJobs component to grab the state and bring it here
               setJobs={(jobResults) => this.setState({ jobs: jobResults })}
               jobs={this.state.jobs}
             />
           </Route>
 
           <Route path="/details/:id">
+            {/* bringing the state that comes from SearchJobs to JobDetails */}
             <JobDetails jobs={this.state.jobs} />
           </Route>
         </div>

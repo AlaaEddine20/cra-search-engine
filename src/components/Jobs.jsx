@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 class JobCard extends Component {
   render() {
     return (

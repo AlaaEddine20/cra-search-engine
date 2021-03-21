@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 export class JobDetails extends Component {
   render() {
+    // find the job that matches with the params id
+    // the id comes from the  Route "/details/:id" that needs the withRouter to wrap this
+    // component to a higher order component App.js in n this case
     const job = this.props.jobs.find(
       (job) => job.id === this.props.match.params.id
     );
-    console.log(job);
+
     return job ? (
       <div>
         <h1>{job.company}</h1>

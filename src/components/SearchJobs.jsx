@@ -8,13 +8,10 @@ export class SearchJobs extends Component {
     position: "",
     location: "",
     isLoading: false,
-    selectedJob: null,
   };
 
-  handleSelectedJob = (id) => this.setState({ selectedJob: id });
-
   onKeywordChange = (e) => {
-    this.setState({ potition: e.target.value });
+    this.setState({ position: e.target.value });
   };
 
   onLocationChange = (e) => {
@@ -45,9 +42,9 @@ export class SearchJobs extends Component {
         return response.json();
       })
       .then((jobResults) => {
-        console.log(jobResults);
         this.setState({ isLoading: false });
-        this.props.setJobs(jobResults);
+        this.props.setJobs(jobResults); // this function comes from App.js
+        // it takes the parameter jobResults and use it to store the jobs state in App.js and bring it here
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +53,7 @@ export class SearchJobs extends Component {
   };
 
   render() {
-    const { keywords, location, isLoading } = this.state;
+    const { position, location, isLoading } = this.state;
     return (
       <>
         {isLoading ? (
@@ -70,7 +67,7 @@ export class SearchJobs extends Component {
                 <Form.Group>
                   <Form.Label>Job Position</Form.Label>
                   <Form.Control
-                    value={keywords}
+                    value={position}
                     onChange={this.onKeywordChange}
                     type="text"
                     required
@@ -113,11 +110,7 @@ export class SearchJobs extends Component {
             </Row>
           </Form>
         )}
-        <JobCard
-          selectedJob={this.state.selectedJob}
-          handleSelectedJob={this.handleSelectedJob}
-          jobs={this.props.jobs}
-        />
+        <JobCard selectedJob={this.state.selectedJob} jobs={this.props.jobs} />
       </>
     );
   }
